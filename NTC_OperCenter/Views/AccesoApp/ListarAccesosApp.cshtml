@@ -1,0 +1,743 @@
+﻿@model IEnumerable<Repository.Core.Entity.AccesosApp>
+
+@{
+    ViewBag.Title = "ListarAccesosApp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">SRI</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <br /> <br />
+                   <table id="tdSRI" class="table table-bordered" width="100%" cellspacing="0">
+
+                       @if(@ViewBag.Categoria == 1){
+                           <thead>
+                               <tr>
+                                   <th>ID</th>
+                                   <th>Equipo</th>
+                                   <th>Solicitante</th>
+                                   <th>Tk</th>
+                                   <th>Responsable</th>
+                                   <th>Descripcion</th>
+                                   <th>Solicitud</th>
+                                   <th>Estado</th>
+                                   <th>Acciones</th>
+                                </tr>
+                           </thead>
+
+                       }else if(@ViewBag.Categoria == 2){
+                           <thead>
+                               <tr>
+                                   <th>ID</th>
+                                   <th>Equipo</th>
+                                   <th>Solicitante</th>
+                                   <th>Tk</th>
+                                   <th>Responsable</th>
+                                   <th>Descripcion</th>
+                                   <th>Solicitud</th>
+                                   <th>Estado</th>
+                                   <th>Acciones</th>
+                               </tr>
+
+                            </thead>
+                            
+                       }else{
+                           <thead>
+                               <tr>
+                                   <th>ID</th>
+                                   <th>Equipo</th>
+                                   <th>Solicitante</th>
+                                   <th>Tk</th>
+                                   <th>Responsable</th>
+                                   <th>Descripcion</th>
+                                   <th>Solicitud</th>
+                                   <th>Estado</th>
+                               </tr>
+                            </thead>
+                       }
+                   </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*MODAL*@
+<div class="modal fade" id="FromModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SRI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="txtidsri" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="txtidsri" readonly value="0">
+                    </div>
+                    @if (@ViewBag.Categoria == 1)
+                    {
+                        <div class="form-group">
+                            <input type="hidden" id="cboEquipoHidden" />
+                            <label for="Equipo">Equipo:</label>
+                            <select class="form-control" id="Equipo">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cboSolicitanteHidden" />
+                            <label for="Solicitante">Solicitante:</label>
+                            <select class="form-control" id="Solicitante">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tk" class="col-form-label">Tk_referencia:</label>
+                            <input type="text" class="form-control" id="tk" >
+                        </div>
+                        <div class="form-group">
+                            <label for="txtdescripcion" class="col-form-label">Descripcion:</label>
+                            <input type="text" class="form-control" id="txtdescripcion" >
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cboSolicitudHidden" />
+                            <label for="Solicitud">Solicitud:</label>
+                            <select class="form-control" id="Solicitud" >
+                            </select>
+                        </div>
+                    }
+                    else if (@ViewBag.Categoria == 2)
+                    {
+                        <div class="form-group">
+                            <input type="hidden" id="cboEquipoHidden" />
+                            <label for="Equipo">Equipo:</label>
+                            <select class="form-control" id="Equipo" disabled>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cboSolicitanteHidden" />
+                            <label for="Solicitante">Solicitante:</label>
+                            <select class="form-control" id="Solicitante" disabled>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tk" class="col-form-label">Tk_referencia:</label>
+                            <input type="text" class="form-control" id="tk" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtdescripcion" class="col-form-label">Descripcion:</label>
+                            <input type="text" class="form-control" id="txtdescripcion" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cboSolicitudHidden" />
+                            <label for="Solicitud">Solicitud:</label>
+                            <select class="form-control" id="Solicitud" disabled>
+                            </select>
+                        </div>
+                    }
+
+
+
+                    else
+                    {
+                        <div class="form-group">
+                            <label for="txtequipousu" class="col-form-label">Equipo:</label>
+                            <input type="text" class="form-control" id="txtequipo" hidden>
+                            <input type="text" class="form-control" id="txtequipousu" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtsolicitanteusu" class="col-form-label">Solicitante:</label>
+                            <input type="text" class="form-control" id="txtsolicitante" hidden>
+                            <input type="text" class="form-control" id="txtsolicitanteusu" readonly>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="tk" class="col-form-label">Tk_referencia:</label>
+                            <input type="text" class="form-control" id="tk">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtdescripcion" class="col-form-label">Descripcion:</label>
+                            <input type="text" class="form-control" id="txtdescripcion">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cboSolicitudHidden" />
+                            <label for="Solicitud">Solicitud:</label>
+                            <select class="form-control" id="Solicitud">
+                            </select>
+                        </div>
+                    }
+                    @if (@ViewBag.Categoria == 1)
+                    {
+                        <div class="form-group">
+                            <input type="hidden" id="cboResponsableHidden" />
+                            <label for="Responsable">Responsable:</label>
+                            <select class="form-control" id="Responsable">
+                            </select>
+                        </div>
+                    }
+                    else if (@ViewBag.Categoria == 2)
+                    {
+                        <div class="form-group">
+                            <input type="hidden" id="cboResponsableHidden" />
+                            <label for="Responsable">Responsable:</label>
+                            <select class="form-control" id="Responsable">
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group" hidden>
+                            <input type="hidden" id="cboResponsableHidden" />
+                            <label for="Responsable">Responsable:</label>
+                            <select class="form-control" id="Responsable">
+                            </select>
+                        </div>
+                    }
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+
+
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+
+    <script>
+
+          var tabla_SRI;
+
+        $(document).ready(function () {
+               /* LISTADO*/
+            if (@ViewBag.Categoria == 1) {
+                    tabla_SRI =
+
+                        $('#tdSRI').DataTable({
+                            "ajax": {
+                                "url": "@Url.Action("GetData", "AccesoApp")",
+                                "type": "GET",
+                                "dataType": "json",
+                                "data": function (d) {
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            "columns": [
+                                { "data": "Id_AccesoApp" },
+                                { "data": "Equipo" },
+                                { "data": "Usuario" },
+                                { "data": "tk_referencia" },
+                                { "data": "Responsable" },
+                                { "data": "Descripcion" },
+                                { "data": "Solicitud" },
+                                { "data": "Estado" },
+                                {"data": "Id_AccesoApp", "render": function (data) {
+                                        return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
+                                            "<button class='btn btn-danger btn-sm-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                                    },
+                                    "orderable": false,
+                                    "searchable": false,
+                                    "width": "150px"
+                                   
+                                }
+                            ],
+                            "dom": 'Bfrtip',
+                            "buttons": [
+                                {
+                                    text: 'Agregar Nuevo',
+                                    atrr: { class: 'btn btn-primary btn-sm' },
+                                    action: function (e, dt, node, config) {
+                                        abrirModal(0)
+                                    }
+                                }
+                            ],
+                            "language": {
+                                "emptyTable": "No Data Found"
+                            }
+
+                        });
+
+            } else if (@ViewBag.Categoria == 2) {
+                    tabla_SRI =
+
+                        $('#tdSRI').DataTable({
+                            "ajax": {
+                                "url": "@Url.Action("GetData", "AccesoApp")",
+                                "type": "GET",
+                                "dataType": "json",
+                                "data": function (d) {
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            "columns": [
+                                { "data": "Id_AccesoApp" },
+                                { "data": "Equipo" },
+                                { "data": "Usuario" },
+                                { "data": "tk_referencia" },
+                                { "data": "Responsable" },
+                                { "data": "Descripcion" },
+                                { "data": "Solicitud" },
+                                { "data": "Estado" },
+                                { "data": "Id_AccesoApp", "render": function (data) {
+                                        return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>"
+                                    },
+                                    "orderable": false,
+                                    "searchable": false,
+                                    "width": "150px"
+                                }
+                            ],
+                            "language": {
+                                "emptyTable": "No Data Found"
+                            }
+
+                        });
+
+                } else {
+                     tabla_SRI =
+
+                        $('#tdSRI').DataTable({
+                            "ajax": {
+                                "url": "@Url.Action("GetData", "AccesoApp")",
+                                "type": "GET",
+                                "dataType": "json",
+                                "data": function (d) {
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            "columns": [
+                                { "data": "Id_AccesoApp" },
+                                { "data": "Equipo" },
+                                { "data": "Usuario" },
+                                { "data": "tk_referencia" },
+                                { "data": "Responsable" },
+                                { "data": "Descripcion" },
+                                { "data": "Solicitud" },
+                                { "data": "Estado" }
+                            ],
+                            "dom": 'Bfrtip',
+                            "buttons": [
+                                {
+                                    text: 'Agregar Nuevo',
+                                    atrr: { class: 'btn btn-primary btn-sm' },
+                                    action: function (e, dt, node, config) {
+                                        abrirModal(0)
+                                    }
+                                }
+                            ],
+                            "language": {
+                                "emptyTable": "No Data Found"
+                            }
+
+                        });
+                }
+
+            });
+
+
+
+
+            /*ABRIR MODAL*/
+        function abrirModal(idUsuario) {
+            $('#txtidsri').val(idUsuario);
+
+
+            if (@ViewBag.Categoria == 1) {
+                ListarEquipo();
+                ListarSolicitante();
+
+                ListarSolicitud();
+                ListarResponsable();
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarSRI", "AccesoApp")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data != null) {
+                                $('#cboEquipoHidden').val(data.Id_Equipo);
+                                $('#cboSolicitanteHidden').val(data.Id_Usuario);
+                                $('#tk').val(data.tk_referencia);
+                                $('#txtdescripcion').val(data.Descripcion);
+                                $('#cboSolicitudHidden').val(data.Id_Solicitud);
+                                $('#cboResponsableHidden').val(data.Id_Responsable);
+                            }
+                        }
+                    });
+                } else {
+                    $('#cboEquipoHidden').val("");
+                    $('#cboSolicitanteHidden').val("");
+                    $('#tk').val("");
+                    $('#txtdescripcion').val("");
+                    $('#cboSolicitudHidden').val("");
+                    $('#cboResponsableHidden').val("");
+                }
+
+                $("#FromModal").modal('show');
+
+            } else if (@ViewBag.Categoria == 2) {
+                ListarEquipo();
+                ListarSolicitante();
+                ListarSolicitud();
+                ListarResponsable();
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarSRI", "AccesoApp")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data != null) {
+                                $('#cboEquipoHidden').val(data.Id_Equipo);
+                                $('#cboSolicitanteHidden').val(data.Id_Usuario);
+                                $('#tk').val(data.tk_referencia);
+                                $('#txtdescripcion').val(data.Descripcion);
+                                $('#cboSolicitudHidden').val(data.Id_Solicitud);
+                                $('#cboResponsableHidden').val(data.Id_Responsable);
+                            }
+                        }
+                    });
+                } else {
+                    $('#cboEquipoHidden').val("");
+                    $('#cboSolicitanteHidden').val("");
+                    $('#tk').val("");
+                    $('#txtdescripcion').val("");
+                    $('#cboSolicitudHidden').val("");
+                    $('#cboResponsableHidden').val("");
+                }
+               
+                $("#FromModal").modal('show');
+
+            } else {
+                ListarEquipoxUsuario();
+                ListarSolicitantexUsuario();
+                ListarSolicitud();
+                ListarResponsable();
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarSRI", "AccesoApp")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data != null) {
+                                $('#cboEquipoHidden').val(data.Id_Equipo);
+                                $('#cboSolicitanteHidden').val(data.Id_Usuario);
+                                $('#tk').val(data.tk_referencia);
+                                $('#txtdescripcion').val(data.Descripcion);
+                                $('#cboSolicitudHidden').val(data.Id_Solicitud);
+                                $('#cboResponsableHidden').val(data.Id_Responsable);
+                            }
+                        }
+                    });
+                } else {
+                    $('#cboEquipoHidden').val("");
+                    $('#cboSolicitanteHidden').val("");
+                    $('#tk').val("");
+                    $('#txtdescripcion').val("");
+                    $('#cboSolicitudHidden').val("");
+                    $('#cboResponsableHidden').val("");
+                }
+
+                $("#FromModal").modal('show');
+
+            }
+
+        }
+
+
+
+
+        //LISTA EquipoxUsuario
+        function ListarEquipoxUsuario(idUsuario) {
+            var idUsuario = @ViewBag.Usuario;
+            if (idUsuario != 0) {
+                $.ajax({
+                    url: "@Url.Action("ListarEquipoxUsuario", "AccesoApp")" + "?id=" + idUsuario,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        $('#txtequipo').val(respuestaJson.Id_Equipo);
+                        $('#txtequipousu').val(respuestaJson.Equipo);
+                    }
+                });
+            } else {
+                $('#txtequipo').val("");
+                $('#txtequipousu').val("");
+            }
+         }
+
+        //LISTA Equipo
+         function ListarEquipo() {
+                $.ajax({
+                    url: "@Url.Action("ListarEquipo", "AccesoApp")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idEquipoHidden = $('#cboEquipoHidden').val();
+                        $("#Equipo").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var equipo = respuestaJson[i];
+                            var strSelected = (equipo.Id_Equipo == parseInt(idEquipoHidden)) ? " selected " : "";
+                            $("#Equipo").append(
+                                "<option id='" + equipo.Id_Equipo + "' " + strSelected + " >" + equipo.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+        //LISTA Solicitante
+        function ListarSolicitante() {
+                $.ajax({
+                    url: "@Url.Action("ListarSolicitante", "AccesoApp")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idSolicitanteHidden = $('#cboSolicitanteHidden').val();
+                        $("#Solicitante").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var solicitante = respuestaJson[i];
+                            var strSelected = (solicitante.Id_Solicitante == parseInt(idSolicitanteHidden)) ? " selected " : "";
+                            $("#Solicitante").append(
+                                "<option id='" + solicitante.Id_Solicitante + "' " + strSelected + " >" + solicitante.Nombres +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+        //LISTA SolicitantexUsuario
+        function ListarSolicitantexUsuario(idUsuario) {
+              var idUsuario = @ViewBag.Usuario;
+              if (idUsuario != 0) {
+                  $.ajax({
+                      url: "@Url.Action("ListarSolicitantexUsuario", "AccesoApp")" + "?id=" + idUsuario,
+                      type: 'GET',
+                      dataType: 'json',
+                      success: function (respuestaJson) {
+                          $('#txtsolicitante').val(respuestaJson.Id_Solicitante);
+                          $('#txtsolicitanteusu').val(respuestaJson.Solicitante);
+                      }
+                  });
+              } else {
+                  $('#txtsolicitante').val("");
+                  $('#txtsolicitanteusu').val("");
+              }
+
+            }
+
+
+        //LISTA Solicitud
+        function ListarSolicitud() {
+                $.ajax({
+                    url: "@Url.Action("ListarSolicitud", "AccesoApp")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idSolicitudHidden = $('#cboSolicitudHidden').val();
+                        $("#Solicitud").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var solicitud = respuestaJson[i];
+                            var strSelected = (solicitud.Id_Solicitud == parseInt(idSolicitudHidden)) ? " selected " : "";
+                            $("#Solicitud").append(
+                                "<option id='" + solicitud.Id_Solicitud + "' " + strSelected + " >" + solicitud.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+            }
+
+
+        //LISTA Responsable
+        function ListarResponsable() {
+                $.ajax({
+                    url: "@Url.Action("ListarResponsable", "AccesoApp")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idResponsableHidden = $('#cboResponsableHidden').val();
+                        $("#Responsable").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var responsable = respuestaJson[i];
+                            var strSelected = (responsable.Id_Responsable == parseInt(idResponsableHidden)) ? " selected " : "";
+                            $("#Responsable").append(
+                                "<option id='" + responsable.Id_Responsable + "' " + strSelected + " >" + responsable.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+            }
+
+
+
+        /*GUARDAR*/
+        function Guardar() {
+                if (@ViewBag.Categoria == 1) {
+                    var data = {
+                        accesosapp: {
+                            Id_AccesoApp: parseInt($('#txtidsri').val()),
+                            Id_Equipo: parseInt($("#Equipo option:selected").attr('id')),
+                            Id_Usuario: parseInt($("#Solicitante option:selected").attr('id')),
+                            tk_referencia: $('#tk').val(),
+                            Descripcion: $('#txtdescripcion').val(),
+                            Id_Solicitud: parseInt($("#Solicitud option:selected").attr('id')),
+                            Id_Responsable: parseInt($("#Responsable option:selected").attr('id')),
+                        }
+                    }
+                    jQuery.ajax({
+
+                        url: "@Url.Action("GuardarSRI", "AccesoApp")",
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        success: function (respuestaJson) {
+                            if (respuestaJson.resultado) {
+                                tabla_SRI.ajax.reload(null, false);
+                                $('#FromModal').modal('hide');
+                            } else {
+                                alert("No se pudo guardar los cambios");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        },
+                        beforeSend: function () {
+
+                        }
+                    });
+                } else if (@ViewBag.Categoria == 2) {
+                    var data = {
+                        accesosapp: {
+                            Id_AccesoApp: parseInt($('#txtidsri').val()),
+                            Id_Equipo: parseInt($("#Equipo option:selected").attr('id')),
+                            Id_Usuario: parseInt($("#Solicitante option:selected").attr('id')),
+                            tk_referencia: $('#tk').val(),
+                            Descripcion: $('#txtdescripcion').val(),
+                            Id_Solicitud: parseInt($("#Solicitud option:selected").attr('id')),
+                            Id_Responsable: parseInt($("#Responsable option:selected").attr('id')),
+                        }
+                    }
+                    jQuery.ajax({
+
+                        url: "@Url.Action("GuardarSRI", "AccesoApp")",
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        success: function (respuestaJson) {
+                            if (respuestaJson.resultado) {
+                                tabla_SRI.ajax.reload(null, false);
+                                $('#FromModal').modal('hide');
+                            } else {
+                                alert("No se pudo guardar los cambios");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        },
+                        beforeSend: function () {
+
+                        }
+                    });
+                }else {
+                        var data = {
+                        accesosapp: {
+                            Id_AccesoApp: parseInt($('#txtidsri').val()),
+                            Id_Equipo: parseInt($('#txtequipo').val()),
+                            Id_Usuario: parseInt($('#txtsolicitante').val()),
+                            tk_referencia: $('#tk').val(),
+                            Descripcion: $('#txtdescripcion').val(),
+                            Id_Solicitud: parseInt($("#Solicitud option:selected").attr('id')),
+                            Id_Responsable: parseInt($("#Responsable option:selected").attr('id')),
+                         }
+                    }
+                    jQuery.ajax({
+
+                        url: "@Url.Action("GuardarSRI", "AccesoApp")",
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        success: function (respuestaJson) {
+                            if (respuestaJson.resultado) {
+                                tabla_SRI.ajax.reload(null,false);
+                                $('#FromModal').modal('hide');
+                            } else {
+                                alert("No se pudo guardar los cambios");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        },
+                        beforeSend: function () {
+
+                        }
+
+                    });
+                }
+
+         }
+
+
+         /*ELIMINAR*/
+         function Eliminar(idUsuario) {
+
+                if (confirm("¿Realmente desea eliminar?")) {
+                    jQuery.ajax({
+
+                        url: "@Url.Action("DeleteSRI", "AccesoApp")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabla_SRI.ajax.reload(null,false);
+                            }
+                        }
+
+                    });
+                }
+            }
+
+
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

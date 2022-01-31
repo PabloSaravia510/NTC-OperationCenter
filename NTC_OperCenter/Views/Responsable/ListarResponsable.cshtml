@@ -1,0 +1,234 @@
+﻿@model IEnumerable<Repository.Core.Entity.Responsable>
+
+@{
+    ViewBag.Title = "ListarResponsable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Responsable</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <br /> <br />
+            <table id="tdResponsable" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Responsable</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
+                </thead>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@*MODAL*@
+<div class="modal fade" id="FromModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Responsables</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="txtidresponsables" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="txtidresponsables" readonly value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtDescripcion" class="col-form-label">Descripcion:</label>
+                        <input type="text" class="form-control" id="txtDescripcion">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+
+
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+
+    <script>
+
+            var tabla_responsable;
+
+            $(document).ready(function () {
+                 /*alert('HOLA');*/
+
+                tabla_responsable =
+
+                    $('#tdResponsable').DataTable({
+                    "ajax": {
+                        "url": "@Url.Action("GetData", "Responsable")",
+                        "type": "GET",
+                        "dataType": "json",
+                        "data": function (d) {
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        { "data": "Id_Responsable" },
+                        { "data": "Descripcion" },
+                        {"data": "Id_Responsable", "render": function (data) {
+                            return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
+                                "<button class='btn btn-danger btn-sm-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                            },
+                            "orderable": false,
+                            "searchable": false,
+                            "width" :"150px"
+                        }
+                    ],
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            text: 'Agregar Nuevo',
+                            atrr: { class: 'btn btn-primary btn-sm' },
+                            action: function (e, dt, node, config) {
+                                abrirModal(0)
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No Data Found"
+                    }
+
+                });
+            });
+
+
+
+
+
+
+            function abrirModal(idUsuario) {
+                $('#txtidresponsables').val(idUsuario);
+
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarResponsable", "Responsable")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            /*console.log(data);*/
+                            if (data != null) {
+                                $('#txtDescripcion').val(data.Descripcion);
+                            }
+                        }
+                    });
+                } else {
+                    $('#txtDescripcion').val("");
+                }
+
+               /* alert(id);*/
+                $("#FromModal").modal('show');
+
+            }
+
+
+
+
+
+            function Guardar() {
+
+                var data = {
+                    responsable: {
+                        Id_Responsable: parseInt($('#txtidresponsables').val()),
+                        Descripcion: $('#txtDescripcion').val(),
+                    }
+                }
+                console.log(data);
+
+                jQuery.ajax({
+
+                    url: "@Url.Action("GuardarResponsable", "Responsable")",
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: function (respuestaJson) {
+                        if (respuestaJson.resultado) {
+                            console.log(respuestaJson.resultado);
+                            tabla_responsable.ajax.reload();
+                            $('#FromModal').modal('hide');
+                        } else {
+                            alert("No se pudo guardar los cambios");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                    beforeSend: function () {
+
+                    }
+
+                });
+
+
+
+
+            }
+
+
+
+            function Eliminar(idUsuario) {
+
+                if (confirm("¿Realmente desea eliminar?")) {
+                    jQuery.ajax({
+
+                        url: "@Url.Action("DeleteResponsable", "Responsable")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabla_responsable.ajax.reload();
+                            }
+                        }
+
+                    });
+                }
+
+
+
+            }
+
+
+    </script>
+
+
+
+}
+
+
+
+
+
+

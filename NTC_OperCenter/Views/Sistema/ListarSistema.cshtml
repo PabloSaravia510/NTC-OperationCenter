@@ -1,0 +1,229 @@
+﻿@model IEnumerable<Repository.Core.Entity.Sistema>
+
+@{
+    ViewBag.Title = "ListarSistema";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Equipo</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <br /> <br />
+            <table id="tdEquipos" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
+                </thead>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@*MODAL*@
+<div class="modal fade" id="FromModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sistema</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="txtidsistema" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="txtidsistema" readonly value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtDescripcion" class="col-form-label">Descripcion:</label>
+                        <input type="text" class="form-control" id="txtDescripcion">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+
+
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+
+    <script>
+
+            var tabla_sistema;
+
+            $(document).ready(function () {
+                 /*alert('HOLA');*/
+
+                tabla_sistema =
+
+                    $('#tdEquipos').DataTable({
+                    "ajax": {
+                        "url": "@Url.Action("GetData", "Sistema")",
+                        "type": "GET",
+                        "dataType": "json",
+                        "data": function (d) {
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        { "data": "Id_Sistema" },
+                        { "data": "Descripcion" },
+                        { "data": "Id_Sistema", "render": function (data) {
+                            return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
+                                "<button class='btn btn-danger btn-sm-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                            },
+                            "orderable": false,
+                            "searchable": false,
+                            "width" :"150px"
+                        }
+                    ],
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            text: 'Agregar Nuevo',
+                            atrr: { class: 'btn btn-primary btn-sm' },
+                            action: function (e, dt, node, config) {
+                                abrirModal(0)
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No Data Found"
+                    }
+
+                });
+            });
+
+
+
+
+
+
+            function abrirModal(idUsuario) {
+                $('#txtidsistema').val(idUsuario);
+
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarSistema", "Sistema")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            /*console.log(data);*/
+                            if (data != null) {
+                                $('#txtDescripcion').val(data.Descripcion);
+                            }
+                        }
+                    });
+                } else {
+                    $('#txtDescripcion').val("");
+                }
+
+               /* alert(id);*/
+                $("#FromModal").modal('show');
+
+            }
+
+
+
+
+
+            function Guardar() {
+
+                var data = {
+                    sistema: {
+                        Id_Sistema: parseInt($('#txtidsistema').val()),
+                        Descripcion: $('#txtDescripcion').val(),
+                    }
+                }
+                console.log(data);
+
+                jQuery.ajax({
+
+                    url: "@Url.Action("GuardarSistema", "Sistema")",
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: function (respuestaJson) {
+                        if (respuestaJson.resultado) {
+                            tabla_sistema.ajax.reload();
+                            $('#FromModal').modal('hide');
+                        } else {
+                            alert("No se pudo guardar los cambios");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                    beforeSend: function () {
+
+                    }
+
+                });
+
+
+
+
+            }
+
+
+
+            function Eliminar(idUsuario) {
+
+                if (confirm("¿Realmente desea eliminar?")) {
+                    jQuery.ajax({
+
+                        url: "@Url.Action("DeleteSistema", "Sistema")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabla_sistema.ajax.reload();
+                            }
+                        }
+
+                    });
+                }
+
+
+
+            }
+
+
+    </script>
+
+
+
+}
+

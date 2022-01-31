@@ -1,0 +1,536 @@
+﻿@model IEnumerable<Repository.Core.Entity.GestionAccesos.GestionAcceso>
+
+@{
+    ViewBag.Title = "ListarGestionAcceso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Control de Accesos</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <br /> <br />
+            <table id="tb_GA" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha</th>
+                        <th>Solicitante</th>
+                        <th>Nombre Usuario</th>
+                        <th>Area</th>
+                        <th>Sede</th>
+                        <th>Servicio</th>
+                        <th>Detalle de la Solicitud</th>
+                        <th>Aprobadores</th>
+                        <th>Tipo</th>
+                        <th>Referencia Tk</th>
+                        <th>Responsable</th>
+                        <th>Username</th>
+                        <th>Perfil Similar</th>
+                        <th>Observaciones</th>
+                        <th>Acciones</th>
+                </thead>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+@*MODAL*@
+<div class="modal fade" id="FromModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Control de Accesos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="txtidga" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="txtidga" readonly value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha" class="col-form-label">Fecha y Hora:</label>
+                        @*<input id="fecha" name="fecha" type='text' class="btn btn-input btn-flat btn-sm btn-date" placeholder="dd-MM-yyyy HH:mm:ss" />*@
+                        <input type="date" class="form-control" id="fecha" />
+                        @*<span class="input-group-btn">
+                                <button type="button" class="btn btn-input btn-flat btn-sm btn-date" data-input="fecha"><i class="fas fa-calendar-alt"></i></button>
+                            </span>*@
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboSolicitanteHidden" />
+                        <label for="Solicitante">Solicitante:</label>
+                        <select class="form-control" id="Solicitante">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtdusuario" class="col-form-label">Nombre de Usuario:</label>
+                        <input type="text" class="form-control" id="txtdusuario">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboAreaHidden" />
+                        <label for="Area">Area:</label>
+                        <select class="form-control" id="Area">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboSedeHidden" />
+                        <label for="Sede">Sede:</label>
+                        <select class="form-control" id="Sede">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboServicioHidden" />
+                        <label for="Servicio">Servicio:</label>
+                        <select class="form-control" id="Servicio">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtdet" class="col-form-label">Detalle de la Solicitud:</label>
+                        <input type="text" class="form-control" id="txtdet">
+                        @*<textarea id="txtdet" cols="3" rows="3" style="width: 500px; height: 17em;text-transform:none !important;"></textarea>*@
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboAprobadoHidden" />
+                        <label for="Aprobado">Aprobado por:</label>
+                        <select class="form-control" id="Aprobado">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboTipoHidden" />
+                        <label for="Tipo">Tipo:</label>
+                        <select class="form-control" id="Tipo">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txttk" class="col-form-label">Referencia TK:</label>
+                        <input type="text" class="form-control" id="txttk">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboRealizadoHidden" />
+                        <label for="Realizado">Realizado por:</label>
+                        <select class="form-control" id="Realizado">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtusername" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" id="txtusername">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtperfil" class="col-form-label">Perfil Similar:</label>
+                        <input type="text" class="form-control" id="txtperfil">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtobs" class="col-form-label">Observacion:</label>
+                        <input type="text" class="form-control" id="txtobs">
+                        @*<textarea id="txtobs" cols="3" rows="3" style="width: 500px; height: 17em;text-transform:none !important;"></textarea>*@
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+
+
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+
+    <script>
+
+        var tdGA;
+
+            $(document).ready(function () {
+                 /*alert('HOLA');*/
+
+                tdGA =
+
+                    $('#tb_GA').DataTable({
+                    "ajax": {
+                        "url": "@Url.Action("GetData", "GestionAcceso")",
+                        "type": "GET",
+                        "dataType": "json",
+                        "data": function (d) {
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        { "data": "Id_GestionAcceso" },
+                        { "data": "FechaHora" },
+                        { "data": "Solicitante" },
+                        { "data": "NombreUsuario" },
+                        { "data": "Area" },
+                        { "data": "Sede" },
+                        { "data": "Servicio" },
+                        { "data": "DetalleSolicitud" },
+                        { "data": "Aprobadores" },
+                        { "data": "Tipo" },
+                        { "data": "ReferenciaTK" },
+                        { "data": "Responsable" },
+                        { "data": "Username" },
+                        { "data": "PerfilSimilar" },
+                        { "data": "Observaciones" },
+                        {"data": "Id_GestionAcceso", "render": function (data) {
+                            return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
+                                "<button class='btn btn-danger btn-sm-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                            },
+                            "orderable": false,
+                            "searchable": false,
+                            "width" :"150px"
+                        }
+                    ],
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            text: 'Agregar Nuevo',
+                            atrr: { class: 'btn btn-primary btn-sm' },
+                            action: function (e, dt, node, config) {
+                                abrirModal(0)
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No Data Found"
+                    }
+
+                });
+            });
+
+
+
+
+
+
+            function abrirModal(idUsuario) {
+                $('#txtidga').val(idUsuario);
+
+                ListarSolicitante();
+                ListarArea();
+                ListarSede();
+                ListarServicio();
+                ListarAprobadores();
+                ListarTipo();
+                ListarResponsable();
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarGestionAcceso", "GestionAcceso")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            /*console.log(data);*/
+                            if (data != null) {
+                                $('#fecha').val(data.FechaHora);
+                                $('#cboSolicitanteHidden').val(data.Id_Solicitante_GA);
+                                $('#txtdusuario').val(data.NombreUsuario);
+                                $('#cboAreaHidden').val(data.Id_Area_GA);
+                                $('#cboSedeHidden').val(data.Id_Sede_GA);
+                                $('#cboServicioHidden').val(data.Id_Servicio_GA);
+                                $('#txtdet').val(data.DetalleSolicitud);
+                                $('#cboAprobadoHidden').val(data.Id_Aprobadores_GA);
+                                $('#cboTipoHidden').val(data.Id_Tipo_GA);
+                                $('#txttk').val(data.ReferenciaTK);
+                                $('#cboRealizadoHidden').val(data.Id_Responsable);
+                                $('#txtusername').val(data.Username);
+                                $('#txtperfil').val(data.PerfilSimilar);
+                                $('#txtobs').val(data.Observaciones);
+                            }
+                        }
+                    });
+                } else {
+                    $('#fecha').val("");
+                    $('#cboSolicitanteHidden').val("");
+                    $('#txtdusuario').val("");
+                    $('#cboAreaHidden').val("");
+                    $('#cboSedeHidden').val("");
+                    $('#cboServicioHidden').val("");
+                    $('#txtdet').val("");
+                    $('#cboAprobadoHidden').val("");
+                    $('#cboTipoHidden').val("");
+                    $('#txttk').val("");
+                    $('#cboRealizadoHidden').val("");
+                    $('#txtusername').val("");
+                    $('#txtperfil').val("");
+                    $('#txtobs').val("");
+                }
+
+               /* alert(id);*/
+                $("#FromModal").modal('show');
+
+            }
+
+
+
+
+
+        //LISTA SOLICITANTE
+        function ListarSolicitante() {
+                $.ajax({
+                    url: "@Url.Action("ListarSolicitanteGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idSolicitanteHidden = $('#cboSolicitanteHidden').val();
+                        $("#Solicitante").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var solicitante = respuestaJson[i];
+                            var strSelected = (solicitante.Id_Solicitante_GA == parseInt(idSolicitanteHidden)) ? " selected " : "";
+                            $("#Solicitante").append(
+                                "<option id='" + solicitante.Id_Solicitante_GA + "' " + strSelected + " >" + solicitante.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+
+        //LISTA AREA
+        function ListarArea() {
+                $.ajax({
+                    url: "@Url.Action("ListarAreaGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idAreaHidden = $('#cboAreaHidden').val();
+                        $("#Area").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var area = respuestaJson[i];
+                            var strSelected = (area.Id_Area_GA == parseInt(idAreaHidden)) ? " selected " : "";
+                            $("#Area").append(
+                                "<option id='" + area.Id_Area_GA + "' " + strSelected + " >" + area.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+
+
+        //LISTA SEDE
+        function ListarSede() {
+                $.ajax({
+                    url: "@Url.Action("ListarSedeGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idSedeHidden = $('#cboSedeHidden').val();
+                        $("#Sede").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var sede = respuestaJson[i];
+                            var strSelected = (sede.Id_Sede_GA == parseInt(idSedeHidden)) ? " selected " : "";
+                            $("#Sede").append(
+                                "<option id='" + sede.Id_Sede_GA + "' " + strSelected + " >" + sede.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+
+        //LISTA SERVICIO
+        function ListarServicio() {
+                $.ajax({
+                    url: "@Url.Action("ListarServicioGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idServicioHidden = $('#cboServicioHidden').val();
+                        $("#Servicio").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var servicio = respuestaJson[i];
+                            var strSelected = (servicio.Id_Servicio_GA == parseInt(idServicioHidden)) ? " selected " : "";
+                            $("#Servicio").append(
+                                "<option id='" + servicio.Id_Servicio_GA + "' " + strSelected + " >" + servicio.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+        //LISTA APROBADORES
+        function ListarAprobadores() {
+                $.ajax({
+                    url: "@Url.Action("ListarAprobadoresGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idAprobadoHidden = $('#cboAprobadoHidden').val();
+                        $("#Aprobado").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var aprobado = respuestaJson[i];
+                            var strSelected = (aprobado.Id_Aprobadores_GA == parseInt(idAprobadoHidden)) ? " selected " : "";
+                            $("#Aprobado").append(
+                                "<option id='" + aprobado.Id_Aprobadores_GA + "' " + strSelected + " >" + aprobado.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+        //LISTA TIPO
+        function ListarTipo() {
+                $.ajax({
+                    url: "@Url.Action("ListarTipoGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idTipoHidden = $('#cboTipoHidden').val();
+                        $("#Tipo").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var tipo = respuestaJson[i];
+                            var strSelected = (tipo.Id_Tipo_GA == parseInt(idTipoHidden)) ? " selected " : "";
+                            $("#Tipo").append(
+                                "<option id='" + tipo.Id_Tipo_GA + "' " + strSelected + " >" + tipo.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+
+        //LISTA RESPONSABLE
+        function ListarResponsable() {
+                $.ajax({
+                    url: "@Url.Action("ListarResponsableGA", "GestionAcceso")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idRealizadoHidden = $('#cboRealizadoHidden').val();
+                        $("#Realizado").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var realizado = respuestaJson[i];
+                            var strSelected = (realizado.Id_Responsable == parseInt(idRealizadoHidden)) ? " selected " : "";
+                            $("#Realizado").append(
+                                "<option id='" + realizado.Id_Responsable + "' " + strSelected + " >" + realizado.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+        }
+
+
+
+            function Guardar() {
+
+                var data = {
+                    gestionAcceso: {
+                        Id_GestionAcceso: parseInt($('#txtidga').val()),
+                        FechaHora: $('#fecha').val(),
+                        Id_Solicitante_GA: parseInt($("#Solicitante option:selected").attr('id')),
+                        NombreUsuario: $('#txtdusuario').val(),
+                        Id_Area_GA: parseInt($("#Area option:selected").attr('id')),
+                        Id_Sede_GA: parseInt($("#Sede option:selected").attr('id')),
+                        Id_Servicio_GA: parseInt($("#Servicio option:selected").attr('id')),
+                        DetalleSolicitud: $('#txtdet').val(),
+                        Id_Aprobadores_GA: parseInt($("#Aprobado option:selected").attr('id')),
+                        Id_Tipo_GA: parseInt($("#Tipo option:selected").attr('id')),
+                        ReferenciaTK: $('#txttk').val(),
+                        Id_Responsable: parseInt($("#Realizado option:selected").attr('id')),
+                        Username: $('#txtusername').val(),
+                        PerfilSimilar: $('#txtperfil').val(),
+                        Observaciones: $('#txtobs').val(),
+                    }
+                }
+                console.log(data);
+
+                jQuery.ajax({
+
+                    url: "@Url.Action("GuardarGestionAcceso", "GestionAcceso")",
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: function (respuestaJson) {
+                        if (respuestaJson.resultado) {
+                            console.log(respuestaJson.resultado);
+                            tdGA.ajax.reload();
+                            $('#FromModal').modal('hide');
+                        } else {
+                            alert("No se pudo guardar los cambios");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                    beforeSend: function () {
+
+                    }
+
+                });
+
+
+
+
+            }
+
+
+
+            function Eliminar(idUsuario) {
+
+                if (confirm("¿Realmente desea eliminar?")) {
+                    jQuery.ajax({
+
+                        url: "@Url.Action("DeleteGestionAcceso", "GestionAcceso")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tdGA.ajax.reload();
+                            }
+                        }
+
+                    });
+                }
+
+
+
+            }
+
+
+    </script>
+
+
+
+}
+
+
+
+
+

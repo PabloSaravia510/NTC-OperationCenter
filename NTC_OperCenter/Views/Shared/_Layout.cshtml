@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+
+
+
+    <link href="~/Content/index.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+
+   
+</head>
+<body id="page-top">
+
+
+    @*Page Wrapper*@
+    <div id="wrapper">
+
+        @*Sidebar*@
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            @*Sidebar - Brand*@
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index","Home")">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3" style="font-size:12px;">NTC - LAB</div>
+            </a>
+            @*END Sidebar - Brand*@
+
+            @*Divider*@
+            <hr class="sidebar-divider my-0">
+            @*END Divider*@
+
+
+
+
+
+            @*Nav Item -Pages Collapse Menu*@
+            @if (ViewBag.Categoria == 1)
+            {
+                @*Heading*@
+                <div class="sidebar-heading">
+                    Administración
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Administración</span>
+                    </a>
+                    <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="@Url.Action("ListarUsuario","Usuarios")">Usuarios</a>
+                            <a class="collapse-item" href="@Url.Action("ListarResponsable","Responsable")">Operador</a>
+                            <a class="collapse-item" href="@Url.Action("ListarEquipo","Equipo")">Equipo</a>
+                            <a class="collapse-item" href="@Url.Action("ListarSolicitante","Solicitante")">Solicitante</a>
+                            <a class="collapse-item" href="@Url.Action("ListarSolicitud","Solicitud")">Solicitud</a>
+                        </div>
+                    </div>
+                </li>
+
+                @*Heading*@
+                <div class="sidebar-heading">
+                    SRI
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSRI" aria-expanded="true"
+                       aria-controls="collapseSRI">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>SRI</span>
+                    </a>
+                    <div id="collapseSRI" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" href="@Url.Action("ListarAccesosApp","AccesoApp")">SRI</a>
+                        </div>
+                    </div>
+                </li>
+
+
+                @*Heading*@
+                <div class="sidebar-heading">
+                    Control de Accesos
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGA" aria-expanded="true"
+                       aria-controls="collapseGA">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span> Control de Accesos</span>
+                    </a>
+                    <div id="collapseGA" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+
+                            <a class="collapse-item" href="@Url.Action("ListarSolicitanteGA","SolicitanteGA")">Solicitante</a>
+                            <a class="collapse-item" href="@Url.Action("ListarAreaGA","AreaGA")">Area</a>
+                            <a class="collapse-item" href="@Url.Action("ListarSedeGA","SedeGA")">Sede</a>
+                            <a class="collapse-item" href="@Url.Action("ListarServicioGA","ServicioGA")">Servicio</a>
+                            <a class="collapse-item" href="@Url.Action("ListarAprobadoresGA","AprobadoresGA")">Aprobadores</a>
+                            <a class="collapse-item" href="@Url.Action("ListarTipoGA","TipoGA")">Tipo</a>
+                            <a class="collapse-item" href="@Url.Action("ListarGestionAcceso","GestionAcceso")">Control de Accesos</a>
+                        </div>
+                    </div>
+                </li>
+
+
+                @*<li class="nav-item">
+            <a class="nav-link collapsed" href="@Url.Action("DetPaseProduccion","PaseProduccionDet")">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>DET</span>
+            </a>
+            </li>*@
+
+                @*<li class="nav-item">
+            <a class="nav-link collapsed" href="@Url.Action("ListarTipoPase","TipoPase")">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Tipo de Pases</span>
+            </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("ListarOrigen","Origen")">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Origen</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("ListarSistema","Sistema")">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Sistema</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("ListarAprobadores","Aprobadores")">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Aprobadores</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="@Url.Action("ListarProveedor","Proveedor")">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Proveedores</span>
+                </a>
+            </li>*@
+
+            }
+            else if (ViewBag.Categoria == 2)
+            {
+                <div class="sidebar-heading">
+                    SRI
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="@Url.Action("ListarAccesosApp","AccesoApp")">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>SRI</span>
+                    </a>
+                </li>
+                <div class="sidebar-heading">
+                    Control de Accesos
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="@Url.Action("ListarGestionAcceso","GestionAcceso")">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Control de Accesos</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="@Url.Action("ListarAccesosApp","AccesoApp")">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>SRI</span>
+                    </a>
+                </li>
+            }
+            @*END Nav Item -Pages Collapse Menu*@
+
+
+            @*Divider*@
+            <hr class="sidebar-divider d-none d-md-block">
+            @*END Divider*@
+
+            @*Sidebar Toggler (Sidebar)*@
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+            @*END Sidebar Toggler (Sidebar)*@
+
+        </ul>
+        @*End of Sidebar*@
+
+        @*Content Wrapper*@
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            @*Main Content*@
+            <div id="content">
+
+                @*Topbar*@
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    @*Sidebar Toggle (Topbar)*@
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    @*END Sidebar Toggle (Topbar)*@
+
+                    @*Topbar *@
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <span style="font-size:16px;">Operation Center</span>
+                        </div>
+                    </form>
+                    @*END Topbar *@
+
+                    @*Topbar Navbar*@
+                    <ul class="navbar-nav ml-auto">
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+
+                        @*Nav Item - User Information*@
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@ViewBag.Nombre @ViewBag.Apellido</span>
+                                @*<img class="img-profile rounded-circle" src="img/undraw_profile.svg">*@
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                //Dropdown - User Information
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar Sesion
+                                    </a>
+                                </div>
+                            }
+                        </li>
+                        @*END Nav Item - User Information*@
+
+                    </ul>
+                    @*END Topbar Navbar*@
+
+                </nav>
+                @*End of Topbar*@
+
+
+                @*Begin Page Content*@
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+                @*END Begin Page Content*@
+
+            </div>
+            @*End of Main Content*@
+
+
+            @*Footer*@
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; @DateTime.Now.Year - Mi aplicación ASP.NET</span>
+                    </div>
+                </div>
+            </footer>
+            @*End of Footer*@
+
+        </div>
+        @*End of Content Wrapper*@
+
+    </div>
+    @*End of Page Wrapper*@
+
+
+
+    @*Scroll to Top Button*@
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    @*END Scroll to Top Button*@
+
+
+    @*Logout Modal*@
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Estas seguro?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Seleccione "Cerrar sesión" si está listo para finalizar su sesión actual.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/Login/Logout">Cerrar Sesion</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*End Logout Modal*@
+
+
+
+
+
+
+
+
+    <script src="~/Scripts/js/jquery.min.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Scripts/js/sb-admin-2.min.js"></script>
+    <script src="~/Scripts/chart.js/Chart.min.js"></script>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("NTC OPERATION CENTER", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if (ViewBag.Categoria == 1)
+                        {
+                            <li>@Html.ActionLink("Usuarios", "ListarUsuario", "Usuarios")</li>
+                            <li>@Html.ActionLink("Equipo", "ListarEquipo", "Equipo")</li>
+                            <li>@Html.ActionLink("Solicitante", "ListarSolicitante", "Solicitante")</li>
+                            <li>@Html.ActionLink("Solicitud", "ListarSolicitud", "Solicitud")</li>
+                            <li>@Html.ActionLink("Responsables", "ListarResponsable", "Responsable")</li>
+                            <li>@Html.ActionLink("Accesos Aplicativos", "ListarAccesosApp", "AccesoApp")</li>
+
+                            <li>@Html.ActionLink("Tipo de Pases", "ListarTipoPase", "TipoPase")</li>
+                            <li>@Html.ActionLink("Origen", "ListarOrigen", "Origen")</li>
+                            <li>@Html.ActionLink("Sistema", "ListarSistema", "Sistema")</li>
+                            <li>@Html.ActionLink("Servidor Dev", "ListarServidorDev", "ServidorDev")</li>
+                            <li>@Html.ActionLink("Tipo Objeto", "ListarTipoObj", "TipoObj")</li>
+                            <li>@Html.ActionLink("Proyecto", "ListarProyecto", "Proyecto")</li>
+                            <li>@Html.ActionLink("Aprobadores", "ListarAprobadores", "Aprobadores")</li>
+                            <li>@Html.ActionLink("Proveedores", "ListarProveedor", "Proveedor")</li>
+                        }
+                        else if (ViewBag.Categoria == 2)
+                        {
+                            <li>@Html.ActionLink("Accesos Aplicativos", "ListarAccesosApp", "AccesoApp")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Listado", "ListarAccesosApp", "AccesoApp")</li>
+                            <li>@Html.ActionLink("Formulario", "InsertAccesoApp", "AccesoApp")</li>
+
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a href="/Login/Logout" class="btn btn-danger">Cerrar Session</a>
+                            </li>
+                        }
+                        <li> <a href="#" class="d-block">@ViewBag.Nombre @ViewBag.Apellido</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br /><br />*@
+
+
+    @*<div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+</body>
+</html>

@@ -1,0 +1,332 @@
+﻿@model IEnumerable<Repository.Core.Entity.Usuario>
+
+@{
+    ViewBag.Title = "ListarUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <br /> <br />
+            <table id="tdUsuarios" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Username</th>
+                        <th>Equipo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                </thead>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+@*MODAL*@
+<div class="modal fade" id="FromModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Usuarios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="txtidusuario" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="txtidusuario" readonly value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtNombres" class="col-form-label">Nombres:</label>
+                        <input type="text" class="form-control" id="txtNombres">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtApellidos" class="col-form-label">Apellidos:</label>
+                        <input type="text" class="form-control" id="txtApellidos">
+                    </div>
+                    <div class="form-group">
+                        <label for="Username" class="col-form-label">Usuario:</label>
+                        <input type="text" class="form-control" id="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="PWD" class="col-form-label">Contraseña:</label>
+                        <input type="password" class="form-control" id="PWD">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboCargoHidden" />
+                        <label for="Categoria">Rol:</label>
+                        <select class="form-control" id="Categoria">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cboEquipoHidden" />
+                        <label for="Equipo">Equipo:</label>
+                        <select class="form-control" id="Equipo">
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+
+    
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+
+    <script>
+
+            var tabla_usuario;
+
+            $(document).ready(function () {
+                /* alert('HOLA');*/
+
+                tabla_usuario =
+
+                    $('#tdUsuarios').DataTable({
+                    "ajax": {
+                        "url": "@Url.Action("GetData", "Usuarios")",
+                        "type": "GET",
+                        "dataType": "json",
+                        "data": function (d) {
+                            return JSON.stringify(d);
+                        }
+                    },
+                    "columns": [
+                        { "data": "Id_Usuario" },
+                        { "data": "Nombres" },
+                        { "data": "Apellidos" },
+                        { "data": "Username" },
+                        { "data": "Equipo" },
+                        { "data": "Descripcion" },
+                        {"data": "Id_Usuario", "render": function (data) {
+                            return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
+                                "<button class='btn btn-danger btn-sm-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                            },
+                            "orderable": false,
+                            "searchable": false,
+                            "width" :"150px"
+                        }
+                    ],
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        {
+                            text: 'Agregar Nuevo',
+                            atrr: { class: 'btn btn-primary btn-sm' },
+                            action: function (e, dt, node, config) {
+                                abrirModal(0)
+                            }
+                        }
+                    ],
+                    "language": {
+                        "emptyTable": "No Data Found"
+                    }
+
+                });
+            });
+
+
+
+
+
+
+            function abrirModal(idUsuario) {
+                $('#txtidusuario').val(idUsuario);
+
+                ListarCategoria();
+                ListarEquipo();
+
+                if (idUsuario != 0) {
+                    jQuery.ajax({
+                        url: "@Url.Action("BuscarUsuarios", "Usuarios")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            /*console.log(data);*/
+                            if (data != null) {
+                                $('#txtNombres').val(data.Nombres);
+                                $('#txtApellidos').val(data.Apellidos);
+                                $('#Username').val(data.Username);
+                                $('#PWD').val(data.Password);
+                                $('#cboEquipoHidden').val(data.Id_Equipo);
+                                $('#cboCargoHidden').val(data.Id_Categoria);
+                                
+                            }
+                        }
+                    });
+                } else {
+                    $('#txtNombres').val("");
+                    $('#txtApellidos').val("");
+                    $('#Username').val("");
+                    $('#PWD').val("");
+                    $('#cboEquipoHidden').val("");
+                    $('#cboCargoHidden').val("");
+                }
+
+
+
+               /* alert(id);*/
+                $("#FromModal").modal('show');
+
+            }
+
+
+
+
+
+            function ListarCategoria() { //LISTA COMBO
+                $.ajax({
+                    url: "@Url.Action("ListarCategorias", "Usuarios")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idCargoHidden = $('#cboCargoHidden').val();
+                        $("#Categoria").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var cargo = respuestaJson[i];
+                            var strSelected = (cargo.Id_Categoria == parseInt(idCargoHidden)) ? " selected " : "";
+                            $("#Categoria").append(
+                                "<option id='" + cargo.Id_Categoria + "' " + strSelected + " >" + cargo.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+            }
+
+
+
+            function ListarEquipo() { //LISTA COMBO
+                $.ajax({
+                    url: "@Url.Action("ListarEquipo", "Usuarios")",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (respuestaJson) {
+                        var idEquipoHidden = $('#cboEquipoHidden').val();
+                        $("#Equipo").find("option").remove();
+                        for (var i in respuestaJson) {
+                            var equipo = respuestaJson[i];
+                            var strSelected = (equipo.Id_Equipo == parseInt(idEquipoHidden)) ? " selected " : "";
+                            $("#Equipo").append(
+                                "<option id='" + equipo.Id_Equipo + "' " + strSelected + " >" + equipo.Descripcion +
+                                "</option>"
+                            );
+                        }
+                    }
+                });
+            }
+
+
+
+            function Guardar() {
+
+                var data = {
+                    usuario: {
+                        Id_Usuario: parseInt($('#txtidusuario').val()),
+                        Nombres: $('#txtNombres').val(),
+                        Apellidos: $('#txtApellidos').val(),
+                        Username: $('#Username').val(),
+                        Password: $('#PWD').val(),
+                        Id_Categoria: parseInt($("#Categoria option:selected").attr('id')),
+                        Id_Equipo: parseInt($("#Equipo option:selected").attr('id')),
+                    }
+                }
+                console.log(data);
+
+                jQuery.ajax({
+
+                    url: "@Url.Action("GuardarUsuarios", "Usuarios")",
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: function (respuestaJson) {
+                        if (respuestaJson.resultado) {
+                            console.log(respuestaJson.resultado);
+                            tabla_usuario.ajax.reload();
+                            $('#FromModal').modal('hide');
+                        } else {
+                            alert("No se pudo guardar los cambios");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                    beforeSend: function () {
+
+                    }
+
+                });
+
+
+
+
+            }
+
+
+
+            function Eliminar(idUsuario) {
+
+                if (confirm("¿Realmente desea eliminar?")) {
+                    jQuery.ajax({
+
+                        url: "@Url.Action("DeleteUsuario", "Usuarios")" + "?id=" + idUsuario,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabla_usuario.ajax.reload();
+                            }
+                        }
+
+                    });
+                }
+
+
+
+            }
+
+
+    </script>
+
+
+
+}

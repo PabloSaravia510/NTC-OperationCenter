@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NTC_OperationCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_DETALLE_PASES_PRODUCCION">
+          <Key>
+            <PropertyRef Name="ID_Det_PaseProduc" />
+          </Key>
+          <Property Name="ID_Det_PaseProduc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_RT_Pase" Type="int" Nullable="false" />
+          <Property Name="Id_ServidorDev" Type="int" Nullable="false" />
+          <Property Name="Id_TpObj" Type="int" Nullable="false" />
+          <Property Name="Id_Proyecto" Type="int" Nullable="false" />
+          <Property Name="Servidor_Dest" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PROYECTO">
+          <Key>
+            <PropertyRef Name="Id_Proyecto" />
+          </Key>
+          <Property Name="Id_Proyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_RUTA_PASE">
+          <Key>
+            <PropertyRef Name="Id_RT_Pase" />
+          </Key>
+          <Property Name="Id_RT_Pase" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_SERVIDOR_DEV">
+          <Key>
+            <PropertyRef Name="Id_ServidorDev" />
+          </Key>
+          <Property Name="Id_ServidorDev" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_OBJ">
+          <Key>
+            <PropertyRef Name="Id_TpObj" />
+          </Key>
+          <Property Name="Id_TpObj" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="NTC_OperationCenterModelStoreContainer">
+          <EntitySet Name="TB_DETALLE_PASES_PRODUCCION" EntityType="Self.TB_DETALLE_PASES_PRODUCCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PROYECTO" EntityType="Self.TB_PROYECTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_RUTA_PASE" EntityType="Self.TB_RUTA_PASE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SERVIDOR_DEV" EntityType="Self.TB_SERVIDOR_DEV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_TIPO_OBJ" EntityType="Self.TB_TIPO_OBJ" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NTC_OperationCenterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_DETALLE_PASES_PRODUCCION">
+          <Key>
+            <PropertyRef Name="ID_Det_PaseProduc" />
+          </Key>
+          <Property Name="ID_Det_PaseProduc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_RT_Pase" Type="Int32" Nullable="false" />
+          <Property Name="Id_ServidorDev" Type="Int32" Nullable="false" />
+          <Property Name="Id_TpObj" Type="Int32" Nullable="false" />
+          <Property Name="Id_Proyecto" Type="Int32" Nullable="false" />
+          <Property Name="Servidor_Dest" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PROYECTO">
+          <Key>
+            <PropertyRef Name="Id_Proyecto" />
+          </Key>
+          <Property Name="Id_Proyecto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_RUTA_PASE">
+          <Key>
+            <PropertyRef Name="Id_RT_Pase" />
+          </Key>
+          <Property Name="Id_RT_Pase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_SERVIDOR_DEV">
+          <Key>
+            <PropertyRef Name="Id_ServidorDev" />
+          </Key>
+          <Property Name="Id_ServidorDev" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_OBJ">
+          <Key>
+            <PropertyRef Name="Id_TpObj" />
+          </Key>
+          <Property Name="Id_TpObj" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="NTC_OperationCenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_DETALLE_PASES_PRODUCCION" EntityType="Self.TB_DETALLE_PASES_PRODUCCION" />
+          <EntitySet Name="TB_PROYECTO" EntityType="Self.TB_PROYECTO" />
+          <EntitySet Name="TB_RUTA_PASE" EntityType="Self.TB_RUTA_PASE" />
+          <EntitySet Name="TB_SERVIDOR_DEV" EntityType="Self.TB_SERVIDOR_DEV" />
+          <EntitySet Name="TB_TIPO_OBJ" EntityType="Self.TB_TIPO_OBJ" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NTC_OperationCenterModelStoreContainer" CdmEntityContainer="NTC_OperationCenterEntities">
+          <EntitySetMapping Name="TB_DETALLE_PASES_PRODUCCION">
+            <EntityTypeMapping TypeName="NTC_OperationCenterModel.TB_DETALLE_PASES_PRODUCCION">
+              <MappingFragment StoreEntitySet="TB_DETALLE_PASES_PRODUCCION">
+                <ScalarProperty Name="ID_Det_PaseProduc" ColumnName="ID_Det_PaseProduc" />
+                <ScalarProperty Name="Id_RT_Pase" ColumnName="Id_RT_Pase" />
+                <ScalarProperty Name="Id_ServidorDev" ColumnName="Id_ServidorDev" />
+                <ScalarProperty Name="Id_TpObj" ColumnName="Id_TpObj" />
+                <ScalarProperty Name="Id_Proyecto" ColumnName="Id_Proyecto" />
+                <ScalarProperty Name="Servidor_Dest" ColumnName="Servidor_Dest" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PROYECTO">
+            <EntityTypeMapping TypeName="NTC_OperationCenterModel.TB_PROYECTO">
+              <MappingFragment StoreEntitySet="TB_PROYECTO">
+                <ScalarProperty Name="Id_Proyecto" ColumnName="Id_Proyecto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_RUTA_PASE">
+            <EntityTypeMapping TypeName="NTC_OperationCenterModel.TB_RUTA_PASE">
+              <MappingFragment StoreEntitySet="TB_RUTA_PASE">
+                <ScalarProperty Name="Id_RT_Pase" ColumnName="Id_RT_Pase" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SERVIDOR_DEV">
+            <EntityTypeMapping TypeName="NTC_OperationCenterModel.TB_SERVIDOR_DEV">
+              <MappingFragment StoreEntitySet="TB_SERVIDOR_DEV">
+                <ScalarProperty Name="Id_ServidorDev" ColumnName="Id_ServidorDev" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_TIPO_OBJ">
+            <EntityTypeMapping TypeName="NTC_OperationCenterModel.TB_TIPO_OBJ">
+              <MappingFragment StoreEntitySet="TB_TIPO_OBJ">
+                <ScalarProperty Name="Id_TpObj" ColumnName="Id_TpObj" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

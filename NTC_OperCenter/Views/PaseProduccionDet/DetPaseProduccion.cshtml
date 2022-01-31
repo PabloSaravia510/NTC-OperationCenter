@@ -1,0 +1,131 @@
+﻿@model NTC_OperCenter.Models.ViewModels.PasesProduccionViewModel
+@{
+    ViewBag.Title = "DetPaseProduccion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("DetPaseProduccion", "PaseProduccionDet", FormMethod.Post))
+{
+
+    <div class="body-content">
+
+        @*cabecera*@
+        <div class="form-group">
+            <label class="form-control"> RutaPasesDescripcion</label>
+            <input type="text" id="rtpase" />
+
+            <label class="form-control"> ServidorDevDescripcion</label>
+            <input type="text" id="servidordev" />
+
+            <label class="form-control"> TipoObjetoDescripcion</label>
+            <input type="text" id="tpobj" />
+
+            <label class="form-control"> ProyectoDescripcion</label>
+            <input type="text" id="tpproyecto" />
+
+        </div>
+        <hr />
+
+        @*Detalle*@
+        <div class="row">
+
+            <div class="form-group">
+                Servidor Destino
+                <input type="text" id="servidorpro" />
+
+                <input value="Agregar" type="button" onclick="AgregarDetalles(); return false" class="btn btn-success" /> @*return false: para qe no retorne al controllador*@
+            </div>
+
+            @*Marco para agregar los detalles *@
+            <div id="divDetalles">
+                <table id="tablaDetalles" style="width:100%">
+                    <tr>
+                        <th>Ruta del Pase</th>
+                        <th>Servidor Origen</th>
+                        <th>Servidor Destino</th>
+                        <th> Tipo de Objeto</th>
+                        <th> Tipo de Proyecto</th>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Registrar" class="btn btn-danger" />
+        </div>
+
+    </div>
+}
+
+
+<script>
+
+    var num = 0;
+    function AgregarDetalles() {
+        //detalle
+        let RutaPase = document.getElementById("rtpase").value;
+        let ServidorOrigen = document.getElementById("servidordev").value;
+        let ServidorDestino = document.getElementById("servidorpro").value;
+        let TipoObjeto = document.getElementById("tpobj").value;
+        let TipoProyecto = document.getElementById("tpproyecto").value;
+
+
+        //detalleTabla
+        let Tabla = document.getElementById("tablaDetalles");
+        let Tr = document.createElement("tr");
+        let TdRutaPase = document.createElement("td");
+        let TdServidorOrigen = document.createElement("td");
+        let TdServidorDestino = document.createElement("td");
+        let TdTipoObjeto = document.createElement("td");
+        let TdTipoProyecto = document.createElement("td");
+
+        //agregar a la fila
+        Tr.appendChild(TdRutaPase);
+        Tr.appendChild(TdServidorOrigen);
+        Tr.appendChild(TdServidorDestino);
+        Tr.appendChild(TdTipoObjeto);
+        Tr.appendChild(TdTipoProyecto);
+
+        //mostrar los datos
+        TdRutaPase.innerHTML = RutaPase;// Cantidad==//detalle
+        TdServidorOrigen.innerHTML = ServidorOrigen;
+        TdServidorDestino.innerHTML = ServidorDestino;
+        TdTipoObjeto.innerHTML = TipoObjeto;
+        TdTipoProyecto.innerHTML = TipoProyecto;
+        Tabla.appendChild(Tr); //agregar en la tabla/fila
+
+
+        //agregar hiddens:: sirve para capturar informacion y los almacenan en los hiddens para mostrar en el div (divDetalles)
+        let DivDetalles = document.getElementById("divDetalles");
+        let HiddenIndex = document.createElement("input");//nro de repeticion al incrementarse
+        let HiddenServidorDest = document.createElement("input");
+        //cada objeto hidden tiene una matriz para poder agregar los valores para el div con appendChild y mostrar en la tabla
+
+        HiddenIndex.name = "detalles.Index"; //el detalles viene de VentaViewModel
+        HiddenIndex.value = num;
+        HiddenIndex.type = "hidden";
+
+        //.Cantidad .Nombre .Precio viene de VentaDetalleModel
+        HiddenServidorDest.name = "detalles[" + num + "].Servidor_Dest";
+        HiddenServidorDest.value = ServidorDestino;
+        HiddenServidorDest.type = "hidden";
+
+        //agregar al div
+        DivDetalles.appendChild(HiddenIndex);
+        DivDetalles.appendChild(HiddenServidorDest);
+
+        //limpiar los valores de los input
+        document.getElementById("rtpase").value = "";
+        document.getElementById("servidordev").value = "";
+        document.getElementById("servidorpro").value = "";
+        document.getElementById("tpobj").value = "";
+        document.getElementById("tpproyecto").value = "";
+
+        num++;
+    }
+
+</script>
+
+
+
